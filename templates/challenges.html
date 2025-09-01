@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ category }} Challenges - CyberCTF Platform{% endblock %}
+{% block content %}
+<div class="text-center mb-2">
+    <h1 style="color: #ff0040;">{{ category }} Challenges</h1>
+    <a href="/dashboard" style="color: #00ff41;">← Back to Dashboard</a>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+    {% for challenge in challenges %}
+    <div class="card {% if challenge.solved %}solved{% endif %}" style="{% if challenge.solved %}border-color: #00aa30; background: rgba(0, 170, 48, 0.1);{% endif %}">
+        <div style="display: flex; justify-content: between; align-items: flex-start; margin-bottom: 1rem;">
+            <h3 style="color: #00ff41; flex: 1;">{{ challenge.title }}</h3>
+            <div style="text-align: right;">
+                <span style="color: #ff0040; font-weight: bold;">{{ challenge.points }} pts</span>
+                {% if challenge.solved %}
+                <div style="color: #00aa30; margin-top: 5px;">✅ SOLVED</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <p style="margin-bottom: 1.5rem; line-height: 1.6;">{{ challenge.description | safe }}</p>
+        
+        {% if not challenge.solved %}
+        <form class="flag-form" data-challenge-id="{{ challenge.id }}">
+            <div style="display: flex; gap: 10px; align-items: end;">
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 5px; color: #00ff41;">Enter Flag:</label>
+                    <input type="text" name="flag" placeholder="FLAG{...}" class="form-input" required>
+                </div>
+                <button type="submit" class="btn">Submit</button>
+            </div>
+        </form>
+        
+        <details style="margin-top: 1rem;">
+            <summary style="color: #ffaa00; cursor: pointer;">💡 Need a hint?</summary>
+            <p style="margin-top: 0.5rem; color: #ccc; font-style: italic;">{{ challenge.hint }}</p>
+        </details>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    document.querySelectorAll('.flag-form').forEach(form => {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            formData.append('challenge_id', e.target.dataset.challengeId);
+            
+            try {
+                const response = await fetch('/submit_flag', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert(result.success, 'success');
+                    setTimeout(() => window.location.reload(), 2000);
+                } else {
+                    showAlert(result.error, 'error');
+                }
+            } catch (error) {
+                showAlert('An error occurred. Please try again.', 'error');
+            }
+        });
+    });
+</script>
+{% endblock %}

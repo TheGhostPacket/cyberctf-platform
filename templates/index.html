@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Welcome to CyberCTF Platform{% endblock %}
+{% block content %}
+<div class="text-center">
+    <h1 style="font-size: 4rem; margin-bottom: 1rem; background: linear-gradient(45deg, #ff0040, #00ff41); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        🚩 CyberCTF Platform
+    </h1>
+    <p style="font-size: 1.5rem; margin-bottom: 2rem; color: #ccc;">
+        Master Cybersecurity Through Competitive Challenges
+    </p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
+    <div class="card">
+        <h3 style="color: #ff0040; margin-bottom: 1rem;">🔓 Web Security</h3>
+        <p>Learn to find vulnerabilities in web applications, from SQL injection to XSS attacks.</p>
+    </div>
+    
+    <div class="card">
+        <h3 style="color: #ff0040; margin-bottom: 1rem;">🔐 Cryptography</h3>
+        <p>Master the art of codes and ciphers, from Caesar ciphers to modern encryption.</p>
+    </div>
+    
+    <div class="card">
+        <h3 style="color: #ff0040; margin-bottom: 1rem;">🌐 Network Security</h3>
+        <p>Understand network protocols, packet analysis, and network-based attacks.</p>
+    </div>
+    
+    <div class="card">
+        <h3 style="color: #ff0040; margin-bottom: 1rem;">🔍 Reverse Engineering</h3>
+        <p>Analyze and understand how software works by examining compiled programs.</p>
+    </div>
+</div>
+
+<div class="text-center mt-2">
+    <a href="/register" class="btn" style="margin-right: 1rem;">Get Started</a>
+    <a href="/leaderboard" class="btn btn-secondary">View Leaderboard</a>
+</div>
+
+<div class="card mt-2">
+    <h2 style="color: #ff0040; margin-bottom: 1rem;">How It Works</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+        <div>
+            <h4 style="color: #00ff41;">1. Register & Login</h4>
+            <p>Create your hacker account and join the community</p>
+        </div>
+        <div>
+            <h4 style="color: #00ff41;">2. Choose Challenges</h4>
+            <p>Pick from various cybersecurity categories and difficulty levels</p>
+        </div>
+        <div>
+            <h4 style="color: #00ff41;">3. Find the Flags</h4>
+            <p>Solve puzzles and find hidden flags to earn points</p>
+        </div>
+        <div>
+            <h4 style="color: #00ff41;">4. Climb the Leaderboard</h4>
+            <p>Compete with other hackers and prove your skills</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

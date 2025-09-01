@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Leaderboard - CyberCTF Platform{% endblock %}
+{% block content %}
+<div class="text-center mb-2">
+    <h1 style="color: #ff0040;">🏆 Leaderboard</h1>
+    <p>Top hackers in the CyberCTF community</p>
+</div>
+
+<div class="card">
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 2px solid #00ff41;">
+                    <th style="padding: 15px; text-align: left; color: #ff0040;">Rank</th>
+                    <th style="padding: 15px; text-align: left; color: #ff0040;">Hacker</th>
+                    <th style="padding: 15px; text-align: center; color: #ff0040;">Score</th>
+                    <th style="padding: 15px; text-align: center; color: #ff0040;">Solved</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in leaderboard %}
+                <tr style="border-bottom: 1px solid #333; {% if loop.index <= 3 %}background: rgba(255, 215, 0, 0.1);{% endif %}">
+                    <td style="padding: 15px;">
+                        {% if loop.index == 1 %}🥇
+                        {% elif loop.index == 2 %}🥈
+                        {% elif loop.index == 3 %}🥉
+                        {% else %}{{ loop.index }}{% endif %}
+                    </td>
+                    <td style="padding: 15px; color: #00ff41; font-weight: bold;">{{ user[0] }}</td>
+                    <td style="padding: 15px; text-align: center; color: #fff;">{{ user[1] }}</td>
+                    <td style="padding: 15px; text-align: center; color: #fff;">{{ user[2] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 2rem;">
+    <a href="/dashboard" class="btn">Back to Dashboard</a>
+</div>
+{% endblock %}
