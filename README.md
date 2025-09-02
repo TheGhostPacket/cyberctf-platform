@@ -49,10 +49,12 @@ CyberCTF Platform is a professional-grade Capture The Flag (CTF) platform design
 ## ✨ Features
 
 ### 🏆 **Competition Features**
-- **Multi-Category Challenges** - Web Security, Cryptography, Network Security, Password Cracking, Reverse Engineering
+- **20+ Educational Challenges** - Web Security, Cryptography, Network Security, Password Cracking, Reverse Engineering
+- **Progressive Difficulty System** - From Beginner to Medium complexity
 - **Real-Time Scoring System** - Live point tracking and leaderboard updates
-- **Progressive Difficulty** - Challenges ranging from beginner to advanced
-- **Hint System** - Guided learning with helpful hints
+- **Comprehensive Explanations** - Learn the "why" behind each solution
+- **Enhanced Hint System** - Guided learning with educational hints
+- **Category Progress Tracking** - Visual progress bars for each domain
 
 ### 👥 **User Management**
 - **Secure Authentication** - Password hashing with Werkzeug
@@ -199,49 +201,42 @@ Example: `FLAG{welcome_to_ctf}`
 
 ## 🎯 Challenge Categories
 
-### 🔓 **Web Security** (2 challenges)
-- **Basic Flag Hunt** (100 pts) - HTML source code analysis
-- **SQL Injection** (250 pts) - Database bypass techniques
+### 🔓 **Web Security** (6 challenges)
+Learn web application security fundamentals:
+- **HTML Detective** (50 pts) - HTML source code analysis
+- **Cookie Inspector** (75 pts) - Browser cookie investigation  
+- **Simple SQL Injection** (150 pts) - Database bypass techniques
+- **URL Parameter Manipulation** (100 pts) - Parameter tampering
+- **JavaScript Console Secrets** (80 pts) - Console debugging
+- **HTTP Headers Investigation** (120 pts) - Header analysis
 
-**Sample Solutions:**
-```
-Basic Flag Hunt: FLAG{welcome_to_ctf}
-SQL Injection: FLAG{sql_injection_master}
-```
+### 🔐 **Cryptography** (5 challenges)  
+Master encoding and encryption concepts:
+- **Caesar Cipher Beginner** (75 pts) - ROT13 decoding
+- **Base64 Encoding** (50 pts) - Base64 conversion
+- **MD5 Hash Detective** (100 pts) - Hash cracking basics
+- **Hexadecimal Decoder** (80 pts) - Hex to ASCII conversion
+- **Binary Message** (120 pts) - Binary to text conversion
 
-### 🔐 **Cryptography** (2 challenges)
-- **Caesar Cipher** (150 pts) - ROT13 decoding
-- **Base64 Decoder** (120 pts) - Base64 decryption
+### 🌐 **Network Security** (3 challenges)
+Understand network protocols and analysis:
+- **Port Knowledge Quiz** (60 pts) - Common port identification
+- **DNS Lookup Challenge** (100 pts) - DNS record investigation  
+- **Network Protocol Identification** (80 pts) - Protocol analysis
 
-**Sample Solutions:**
-```
-Caesar Cipher: FLAG{CRYPTO_IS_FUN}
-Base64 Decoder: FLAG{base64_decoding}
-```
+### 🔑 **Password Cracking** (3 challenges)
+Learn password security principles:
+- **Weak Password Analysis** (90 pts) - Common password vulnerabilities
+- **Password Strength Quiz** (70 pts) - Security best practices
+- **Hash Type Identification** (60 pts) - Hash format recognition
 
-### 🔑 **Password Cracking** (1 challenge)
-- **Weak Password** (200 pts) - MD5 hash cracking
+### 🔍 **Reverse Engineering** (3 challenges)
+Develop analysis and decoding skills:
+- **ASCII Art Detective** (100 pts) - ASCII decimal conversion
+- **Simple XOR Cipher** (150 pts) - XOR cryptography
+- **File Signature Analysis** (120 pts) - File type identification
 
-**Sample Solution:**
-```
-Weak Password: FLAG{hello}
-```
-
-### 🌐 **Network Security** (1 challenge)
-- **Network Analysis** (100 pts) - Protocol identification
-
-**Sample Solution:**
-```
-Network Analysis: FLAG{HTTPS}
-```
-
-### 🔍 **Reverse Engineering** (1 challenge)
-- **Binary Analysis** (180 pts) - Binary to ASCII conversion
-
-**Sample Solution:**
-```
-Binary Analysis: FLAG{binary}
-```
+**Total: 20 educational challenges worth 1,635 points!**
 
 ---
 
@@ -370,12 +365,15 @@ If you discover a security vulnerability, please send an e-mail to:
 
 ## 📊 Project Statistics
 
-- **7** Total Challenges
-- **5** Challenge Categories  
-- **100+** Lines of Python Code
-- **500+** Lines of HTML/CSS/JS
+- **20** Total Challenges across 5 categories
+- **Educational Explanations** for every challenge
+- **Progressive Difficulty** from Beginner to Medium
+- **1,635** Total points available
+- **Detailed Hints** that teach concepts
+- **500+** Lines of Python Code
+- **800+** Lines of HTML/CSS/JS
 - **Mobile Responsive** Design
-- **Real-Time** Features
+- **Real-Time** Features with live explanations
 
 ---
 

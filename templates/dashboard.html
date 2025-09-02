@@ -2,27 +2,45 @@
 {% block title %}Dashboard - CyberCTF Platform{% endblock %}
 {% block content %}
 <div class="text-center mb-2">
-    <h1 style="color: #ff0040;">Welcome back, {{ username }}!</h1>
-    <p style="font-size: 1.2rem;">Your Score: <span style="color: #00ff41; font-weight: bold;">{{ user_score }} points</span></p>
-    <p>Challenges Solved: <span style="color: #00ff41; font-weight: bold;">{{ solved_count }}</span></p>
+    <h1 style="color: #ff0040;">Welcome back, {{ username }}! 🚀</h1>
+    <div style="display: flex; justify-content: center; gap: 3rem; margin: 1.5rem 0; flex-wrap: wrap;">
+        <div style="text-align: center;">
+            <div style="font-size: 2rem; color: #00ff41; font-weight: bold;">{{ user_score }}</div>
+            <div style="color: #ccc;">Total Points</div>
+        </div>
+        <div style="text-align: center;">
+            <div style="font-size: 2rem; color: #ff0040; font-weight: bold;">{{ solved_count }}</div>
+            <div style="color: #ccc;">Challenges Solved</div>
+        </div>
+        <div style="text-align: center;">
+            <div style="font-size: 2rem; color: #ffaa00; font-weight: bold;">{{ solved_count }}/{{ total_challenges }}</div>
+            <div style="color: #ccc;">Total Progress</div>
+        </div>
+    </div>
 </div>
 
 <div class="card">
     <h2 style="color: #ff0040; margin-bottom: 2rem;">Challenge Categories</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-        {% for category in categories %}
+        {% for stat in category_stats %}
         <div style="background: rgba(0, 255, 65, 0.1); border: 2px solid #00ff41; border-radius: 10px; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
             <h3 style="color: #00ff41; margin-bottom: 1rem;">
-                {% if category == 'Web Security' %}🔓
-                {% elif category == 'Cryptography' %}🔐
-                {% elif category == 'Network Security' %}🌐
-                {% elif category == 'Password Cracking' %}🔑
-                {% elif category == 'Reverse Engineering' %}🔍
+                {% if stat.name == 'Web Security' %}🔓
+                {% elif stat.name == 'Cryptography' %}🔐
+                {% elif stat.name == 'Network Security' %}🌐
+                {% elif stat.name == 'Password Cracking' %}🔑
+                {% elif stat.name == 'Reverse Engineering' %}🔍
                 {% else %}🚩{% endif %}
-                {{ category }}
+                {{ stat.name }}
             </h3>
-            <p style="margin-bottom: 1.5rem;">Test your skills in {{ category.lower() }}</p>
-            <a href="/challenges/{{ category }}" class="btn">View Challenges</a>
+            <div style="margin-bottom: 1rem;">
+                <div style="background: rgba(0, 0, 0, 0.3); height: 8px; border-radius: 4px; margin: 0.5rem 0;">
+                    <div style="background: linear-gradient(90deg, #00ff41, #ffaa00); height: 100%; width: {{ stat.percentage }}%; border-radius: 4px; transition: width 0.5s ease;"></div>
+                </div>
+                <div style="color: #ccc; font-size: 0.9rem;">{{ stat.solved }}/{{ stat.total }} completed ({{ stat.percentage }}%)</div>
+            </div>
+            <p style="margin-bottom: 1.5rem; color: #ccc;">Test your skills in {{ stat.name.lower() }}</p>
+            <a href="/challenges/{{ stat.name }}" class="btn">View Challenges</a>
         </div>
         {% endfor %}
     </div>
