@@ -28,35 +28,60 @@ def init_db():
         )
     ''')
     
-    # Challenges table with explanation field
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS challenges (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            description TEXT NOT NULL,
-            category TEXT NOT NULL,
-            points INTEGER NOT NULL,
-            flag TEXT NOT NULL,
-            hint TEXT,
-            explanation TEXT,
-            challenge_data TEXT,
-            difficulty TEXT DEFAULT 'Easy'
-        )
-    ''')
+    # Check if challenges table exists and has the right columns
+    cursor.execute("PRAGMA table_info(challenges)")
+    columns = [column[1] for column in cursor.fetchall()]
     
-    # Submissions table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS submissions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            challenge_id INTEGER,
-            submitted_flag TEXT,
-            is_correct BOOLEAN,
-            submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users (id),
-            FOREIGN KEY (challenge_id) REFERENCES challenges (id)
-        )
-    ''')
+    if 'explanation' not in columns or 'difficulty' not in columns:
+        # Drop and recreate challenges table with new schema
+        cursor.execute('DROP TABLE IF EXISTS challenges')
+        cursor.execute('DROP TABLE IF EXISTS submissions')
+        
+        # Recreate challenges table with explanation field
+        cursor.execute('''
+            CREATE TABLE challenges (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                description TEXT NOT NULL,
+                category TEXT NOT NULL,
+                points INTEGER NOT NULL,
+                flag TEXT NOT NULL,
+                hint TEXT,
+                explanation TEXT,
+                challenge_data TEXT,
+                difficulty TEXT DEFAULT 'Easy'
+            )
+        ''')
+        
+        # Recreate submissions table
+        cursor.execute('''
+            CREATE TABLE submissions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                challenge_id INTEGER,
+                submitted_flag TEXT,
+                is_correct BOOLEAN,
+                submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id),
+                FOREIGN KEY (challenge_id) REFERENCES challenges (id)
+            )
+        ''')
+        
+        print("✅ Database schema updated with new columns!")
+    else:
+        # Just recreate submissions table if it exists
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS submissions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                challenge_id INTEGER,
+                submitted_flag TEXT,
+                is_correct BOOLEAN,
+                submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id),
+                FOREIGN KEY (challenge_id) REFERENCES challenges (id)
+            )
+        ''')
     
     # Enhanced challenges with better educational content
     challenges = [
@@ -664,16 +689,21 @@ def init_db():
     
     # Clear existing challenges and insert new ones
     cursor.execute('DELETE FROM challenges')
+    cursor.execute('DELETE FROM submissions')  # Clear submissions too since challenge IDs will change
+    
+    print(f"🚀 Loading {len(challenges)} enhanced challenges...")
     
     # Insert enhanced challenges
-    for challenge in challenges:
+    for i, challenge in enumerate(challenges, 1):
         cursor.execute('''
             INSERT INTO challenges (title, description, category, points, flag, hint, explanation, challenge_data, difficulty)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (challenge['title'], challenge['description'], challenge['category'], 
               challenge['points'], challenge['flag'], challenge['hint'], 
               challenge['explanation'], challenge['challenge_data'], challenge['difficulty']))
+        print(f"   ✅ {i}/20: {challenge['title']} ({challenge['points']} pts)")
     
+    print("🎉 All challenges loaded successfully!")
     conn.commit()
     conn.close()
 
@@ -766,6 +796,10 @@ def dashboard():
     cursor.execute('SELECT DISTINCT category FROM challenges')
     categories = [row[0] for row in cursor.fetchall()]
     
+    # Get total challenges count
+    cursor.execute('SELECT COUNT(*) FROM challenges')
+    total_challenges = cursor.fetchone()[0]
+    
     # Get solved challenges
     cursor.execute('''
         SELECT challenge_id FROM submissions 
@@ -773,13 +807,35 @@ def dashboard():
     ''', (session['user_id'],))
     solved_challenges = [row[0] for row in cursor.fetchall()]
     
+    # Get category stats
+    category_stats = []
+    for category in categories:
+        cursor.execute('SELECT COUNT(*) FROM challenges WHERE category = ?', (category,))
+        total_in_category = cursor.fetchone()[0]
+        
+        cursor.execute('''
+            SELECT COUNT(*) FROM challenges c
+            JOIN submissions s ON c.id = s.challenge_id
+            WHERE c.category = ? AND s.user_id = ? AND s.is_correct = 1
+        ''', (category, session['user_id']))
+        solved_in_category = cursor.fetchone()[0]
+        
+        category_stats.append({
+            'name': category,
+            'total': total_in_category,
+            'solved': solved_in_category,
+            'percentage': int((solved_in_category / total_in_category) * 100) if total_in_category > 0 else 0
+        })
+    
     conn.close()
     
     return render_template('dashboard.html', 
                          username=session['username'],
                          user_score=user_score,
                          categories=categories,
-                         solved_count=len(solved_challenges))
+                         solved_count=len(solved_challenges),
+                         total_challenges=total_challenges,
+                         category_stats=category_stats)
 
 @app.route('/challenges/<category>')
 def challenges(category):
