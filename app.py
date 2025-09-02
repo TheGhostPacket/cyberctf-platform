@@ -151,7 +151,11 @@ def register():
         password = request.form['password']
         
         if len(password) < 6:
-            return jsonify({'error': 'Password must be at least 6 characters long'})
+            # Check if it's an AJAX request
+            if request.headers.get('Accept') == 'application/json':
+                return jsonify({'error': 'Password must be at least 6 characters long'})
+            else:
+                return render_template('register.html', error='Password must be at least 6 characters long')
         
         password_hash = generate_password_hash(password)
         
@@ -162,9 +166,18 @@ def register():
                           (username, email, password_hash))
             conn.commit()
             conn.close()
-            return jsonify({'success': 'Registration successful! Please login.'})
+            
+            # Check if it's an AJAX request
+            if request.headers.get('Accept') == 'application/json':
+                return jsonify({'success': 'Registration successful! Please login.'})
+            else:
+                return render_template('login.html', success='Registration successful! Please login.')
         except sqlite3.IntegrityError:
-            return jsonify({'error': 'Username or email already exists'})
+            # Check if it's an AJAX request
+            if request.headers.get('Accept') == 'application/json':
+                return jsonify({'error': 'Username or email already exists'})
+            else:
+                return render_template('register.html', error='Username or email already exists')
     
     return render_template('register.html')
 
@@ -183,9 +196,18 @@ def login():
         if user and check_password_hash(user[1], password):
             session['user_id'] = user[0]
             session['username'] = username
-            return jsonify({'success': 'Login successful!'})
+            
+            # Check if it's an AJAX request by looking for Accept header
+            if request.headers.get('Accept') == 'application/json':
+                return jsonify({'success': 'Login successful!'})
+            else:
+                return redirect(url_for('dashboard'))
         else:
-            return jsonify({'error': 'Invalid username or password'})
+            # Check if it's an AJAX request
+            if request.headers.get('Accept') == 'application/json':
+                return jsonify({'error': 'Invalid username or password'})
+            else:
+                return render_template('login.html', error='Invalid username or password')
     
     return render_template('login.html')
 
