@@ -428,7 +428,6 @@ copies or substantial portions of the Software.
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-theghostpacket.com-blue?style=for-the-badge&logo=firefox)](https://theghostpacket.com)
 [![GitHub](https://img.shields.io/badge/GitHub-TheGhostPacket-black?style=for-the-badge&logo=github)](https://github.com/TheGhostPacket)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-nhyira--yanney-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/nhyira-yanney-b19898178)
 [![Email](https://img.shields.io/badge/Email-contact@theghostpacket.com-red?style=for-the-badge&logo=gmail)](mailto:contact@theghostpacket.com)
 
 </div>
